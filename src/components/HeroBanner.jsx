@@ -32,7 +32,7 @@ const HeroBanner = () => {
 
           <div className="pt-2">
             <Link 
-              href="/all-facilities" 
+              href="/facilities" 
               className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold tracking-wide text-slate-950 bg-gradient-to-r from-teal-400 to-emerald-400 rounded-xl hover:opacity-90 shadow-lg shadow-teal-500/20 transform hover:-translate-y-0.5 transition-all duration-200 group"
             >
               Explore Facilities

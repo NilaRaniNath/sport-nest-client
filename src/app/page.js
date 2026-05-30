@@ -1,3 +1,4 @@
+import FeaturedFacilities from "@/components/FeaturedFacilities";
 import HeroBanner from "@/components/HeroBanner";
 import MissionVision from "@/components/Mission";
 import TipsSection from "@/components/TipsSection";
@@ -8,6 +9,7 @@ export default function Home() {
   return (
     <>
     <HeroBanner></HeroBanner>
+    <FeaturedFacilities></FeaturedFacilities>
     <TipsSection></TipsSection>
     <MissionVision></MissionVision>
     </>

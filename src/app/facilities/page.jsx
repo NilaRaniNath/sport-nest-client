@@ -1,26 +1,9 @@
 import FacilityCard from "@/components/FacilityCard";
+import { getFacilities } from "@/lib/facilities/data";
 import React from "react";
 
-// ১. ডেটা ফেচিং ফাংশন (ভুলগুলো ঠিক করা হয়েছে)
-const getFacilities = async () => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities`, {
-      cache: "no-store", // রিয়েল-টাইম ডেটা নিশ্চিত করার জন্য
-    });
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
 
-    // ✅ এখানে অবশ্যই await ব্যবহার করতে হবে
-    const data = await res.json(); 
-    return data || [];
-
-  } catch (error) {
-    console.error("Error fetching facilities:", error);
-    return []; 
-  }
-};
 
 export default async function FacilitiesPage() {
   
