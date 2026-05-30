@@ -124,7 +124,7 @@ export default function TipsSection() {
                     <span className="text-xs sm:text-sm font-semibold text-slate-300 group-hover:text-white transition-colors">
                       Read Full Guide
                     </span>
-                    <div className="h-8 w-8 rounded-xl bg-white/5 group-hover:bg-gradient-to-r group-hover:from-teal-400 group-hover:to-emerald-400 flex items-center justify-center text-slate-400 group-hover:text-slate-950 transition-all duration-300">
+                    <div className="h-8 w-8 rounded-xl bg-white/5 group-hover:bg-linear-to-r group-hover:from-teal-400 group-hover:to-emerald-400 flex items-center justify-center text-slate-400 group-hover:text-slate-950 transition-all duration-300">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
