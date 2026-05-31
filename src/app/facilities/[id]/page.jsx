@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getSingleFacility } from "@/lib/facilities/data";
-// import BookingForm from "@/components/BookingForm";
+import BookingForm from "@/components/BookingForm";
 
 
 
@@ -89,9 +89,9 @@ export default async function FacilityDetailsPage({ params }) {
             </div>
           </div>
 
-          {/* <div className="lg:col-span-5 sticky top-24">
+          <div className="lg:col-span-5 sticky top-24">
             <BookingForm facility={facility} />
-          </div> */}
+          </div>
 
         </div>
       </div>
