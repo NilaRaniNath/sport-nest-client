@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getSingleFacility } from "@/lib/facilities/data";
+// import BookingForm from "@/components/BookingForm";
 
 
 

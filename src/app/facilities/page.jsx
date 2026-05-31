@@ -1,13 +1,20 @@
 import FacilityCard from "@/components/FacilityCard";
 import { getFacilities } from "@/lib/facilities/data";
 import React from "react";
-
-
-
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
 export default async function FacilitiesPage() {
   
   const facilities = await getFacilities();
+
+ 
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  
+  const isUserSignedIn = !!session; 
     
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0B1528] via-slate-950 to-slate-950 text-white py-16 relative overflow-hidden">
@@ -31,7 +38,7 @@ export default async function FacilitiesPage() {
 
         {facilities.length === 0 ? (
           <div className="text-center py-20 border border-white/5 bg-white/[0.01] backdrop-blur-md rounded-3xl max-w-md mx-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-slate-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/xl" className="h-12 w-12 mx-auto text-slate-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <p className="text-slate-400 font-medium">No facilities found at the moment.</p>
@@ -43,6 +50,7 @@ export default async function FacilitiesPage() {
               <FacilityCard 
                 key={facility._id} 
                 facility={facility} 
+                isUserSignedIn={isUserSignedIn} 
               />
             ))}
           </div>

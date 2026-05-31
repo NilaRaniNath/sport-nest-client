@@ -2,6 +2,7 @@
 import { authClient } from '@/lib/auth-client';
 import { Check } from '@gravity-ui/icons';
 import { Button, Card, Description, FieldError, Form, Input, Label, TextField } from '@heroui/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation'; 
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -30,7 +31,7 @@ const SignUpPage = () => {
           position: "top-right",
           autoClose: 3000,
         });
-        router.push("/");
+        router.push("/signin");
       }
       
       if (error) {
@@ -163,9 +164,9 @@ const SignUpPage = () => {
           <div className='text-center mt-2'>
             <p className='text-xs text-slate-500'>
               Already have an account?{' '}
-              <a href="/login" className='text-blue-600 font-bold hover:underline transition-all'>
+              <Link href="/signin" className='text-blue-600 font-bold hover:underline transition-all'>
                 Log In
-              </a>
+              </Link>
             </p>
           </div>
 
