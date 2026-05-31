@@ -1,11 +1,12 @@
 import React from 'react';
 import FacilityCard from './FacilityCard'; 
-import { getFacilities } from '@/lib/facilities/data';
+import { getFeaturedFacilities } from '@/lib/facilities/data';
+
 
 const FeaturedFacilities = async () => {
-  const allFacilities = await getFacilities();
+  const featuredFacilities = await getFeaturedFacilities();
   
-  const featuredFacilities = allFacilities?.slice(0, 6) || [];
+  // const featuredFacilities = allFacilities?.slice(0, 6) || [];
 
   return (
   

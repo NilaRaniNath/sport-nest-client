@@ -2,9 +2,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); 
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -14,25 +16,30 @@ const Navbar = () => {
     avatar: "/avatar.jpg" 
   };
 
+ 
+  const handleLoginClick = () => {
+    router.push('/signup');
+    setIsMobileMenuOpen(false);
+  };
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     setIsDropdownOpen(false);
   };
 
   return (
-   
     <nav className="bg-[#0B1528]/80 backdrop-blur-md border-b border-white/5 sticky top-0 z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           
-         
+          {/* Logo Section */}
           <Link href="/" className="flex items-center space-x-2 cursor-pointer group">
             <span className="text-xl font-black tracking-wider text-white">
               Sport<span className="bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent group-hover:text-teal-300 transition-colors">Nest</span>
             </span>
           </Link>
 
-         
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/" className="text-slate-300 hover:text-teal-400 font-medium text-sm tracking-wide transition-colors duration-200">
               Home
@@ -56,7 +63,7 @@ const Navbar = () => {
             )}
           </div>
 
-         
+          {/* Desktop Right Actions */}
           <div className="hidden md:flex items-center">
             {isLoggedIn ? (
               <div className="relative ml-3">
@@ -77,7 +84,6 @@ const Navbar = () => {
                   </svg>
                 </button>
 
-              
                 {isDropdownOpen && (
                   <div className="origin-top-right absolute right-0 mt-2.5 w-56 rounded-2xl shadow-2xl bg-slate-900 border border-white/10 divide-y divide-white/5 focus:outline-none z-50">
                     <div className="px-4 py-3 bg-white/[0.02] rounded-t-2xl">
@@ -104,17 +110,16 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-             
               <button 
-                onClick={() => setIsLoggedIn(true)}
+                onClick={handleLoginClick}
                 className="bg-gradient-to-r from-teal-400 to-emerald-400 text-slate-950 px-5 py-2 rounded-xl text-sm font-bold shadow-lg shadow-teal-500/10 hover:opacity-90 transition duration-150"
               >
-                Login
+                SignUp
               </button>
             )}
           </div>
 
-      
+          {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center">
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -133,7 +138,7 @@ const Navbar = () => {
         </div>
       </div>
 
-    
+      {/* Mobile Menu Content */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-slate-950 border-t border-white/5 px-4 pt-2 pb-6 space-y-1">
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl text-base font-medium text-slate-300 hover:bg-white/5 hover:text-teal-400 transition-colors">
@@ -167,8 +172,8 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="pt-4 mt-4 border-t border-white/5">
-              <button onClick={() => { setIsLoggedIn(true); setIsMobileMenuOpen(false); }} className="w-full bg-gradient-to-r from-teal-400 to-emerald-400 text-slate-950 text-center px-4 py-2.5 rounded-xl font-bold transition-all shadow-md">
-                Login
+              <button onClick={handleLoginClick} className="w-full bg-gradient-to-r from-teal-400 to-emerald-400 text-slate-950 text-center px-4 py-2.5 rounded-xl font-bold transition-all shadow-md">
+                SignUp
               </button>
             </div>
           )}
