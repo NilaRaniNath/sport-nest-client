@@ -6,7 +6,7 @@ import { getFeaturedFacilities } from '@/lib/facilities/data';
 const FeaturedFacilities = async () => {
   const featuredFacilities = await getFeaturedFacilities();
   
-  // const featuredFacilities = allFacilities?.slice(0, 6) || [];
+  
 
   return (
   

@@ -44,6 +44,10 @@ export default function BookingForm({ facility }) {
     setLoading(true);
     setMessage({ type: "", text: "" });
 
+
+       const {data:tokenData} = await authClient.token();
+
+
   
     const bookingData = {
       userEmail: userEmail,
@@ -62,6 +66,7 @@ export default function BookingForm({ facility }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
         },
         body: JSON.stringify(bookingData),
       });

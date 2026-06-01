@@ -11,7 +11,7 @@ export default function AddFacility() {
 
   const [formData, setFormData] = useState({
     name: "",
-    type: "",
+    faciliy_type: "",
     image: "", 
     location: "",
     price_per_hour: "",
@@ -58,14 +58,19 @@ export default function AddFacility() {
       ...formData,
       price_per_hour: Number(formData.price_per_hour),
       capacity: Number(formData.capacity),
-      availableSlots: selectedSlots,
+      available_slots: selectedSlots,
       ownerEmail: ownerEmail,
     };
 
     try {
+        const {data:tokenData} = await authClient.token();
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+         headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`,
+        },
         body: JSON.stringify(finalFacilityData),
       });
 
@@ -92,7 +97,7 @@ export default function AddFacility() {
             </div>
             <div>
               <label className="block text-xs font-bold text-slate-400 mb-2">Facility Type</label>
-              <select name="type" required value={formData.type} onChange={handleChange} className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-white">
+              <select name="type" required value={formData.facility_type} onChange={handleChange} className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-white">
                 <option value="">Select Type</option>
                 <option value="Football">Football Turf</option>
                 <option value="Cricket">Cricket Net</option>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MapPin, Calendar, Clock, DollarSign, Trash2, Edit2, X } from "lucide-react";
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
 
 export default function BookingCard({ booking }) {
   const router = useRouter();
@@ -32,8 +33,17 @@ export default function BookingCard({ booking }) {
     setLoading(true);
 
     try {
+
+      const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token || tokenData;
+      // console.log(token)
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking/${bookingId}`, {
         method: "DELETE",
+        headers: {
+          
+          "Authorization": token ? `Bearer ${token}` : "",
+        }
       });
 
       if (res.ok) {
@@ -62,9 +72,15 @@ export default function BookingCard({ booking }) {
     const updatedTotalPrice = pricePerHour * Number(editHours);
 
     try {
+
+      const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token || tokenData;
+      
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking/${bookingId}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          "Authorization": token ? `Bearer ${token}` : "",
+         },
         body: JSON.stringify({
           bookingDate: editDate,
           timeSlot: editSlot,

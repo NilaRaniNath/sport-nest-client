@@ -30,8 +30,14 @@ const MyBookingPage = async () => {
  
     let data = [];
     try {
-        
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking/${user.email}`, {
+        const {token} = await auth.api.getToken({
+            headers:await headers(),
+        });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking/${user.email}`,{
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+        } ,{
             cache: "no-store",
         });
         

@@ -35,7 +35,7 @@ const SignInPage = () => {
       }
 
       if (error) {
-        // ভুল পাসওয়ার্ড বা ইমেইল না থাকলে Better-Auth ৪০১/৪০০ এরর দেয়
+        
         if (error.status === 401 || error.code === "INVALID_EMAIL_OR_PASSWORD") {
           toast.error("Invalid email or password!");
         } else {
@@ -50,12 +50,12 @@ const SignInPage = () => {
   };
 
   return (
-    // সাইন-আপ পেজের সাথে হুবহু মিল রাখা গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড
+    
     <div className='min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
       
       <Card className='w-full max-w-md p-8 bg-white/80 backdrop-blur-md shadow-xl border border-slate-200 rounded-3xl transition-all duration-300 hover:shadow-2xl'>
         
-        {/* ব্র্যান্ড হেডার */}
+        
         <div className='text-center mb-8'>
           <h2 className='text-3xl font-extrabold text-blue-950 tracking-tight'>
             Sport<span className='text-blue-600'>Nest</span>
@@ -65,13 +65,13 @@ const SignInPage = () => {
           </p>
         </div>
 
-        {/* ফর্ম পার্ট */}
+        
         <Form 
           onSubmit={onSubmit} 
           className="flex flex-col gap-5 w-full"
           render={(props) => <form {...props} data-custom="foo" />}
         >
-          {/* Email Input */}
+      
           <TextField
             isRequired
             name="email"
@@ -92,7 +92,7 @@ const SignInPage = () => {
             <FieldError className="text-xs text-red-500 mt-1" />
           </TextField>
 
-          {/* Password Input */}
+          
           <TextField
             isRequired
             name="password"
@@ -113,7 +113,7 @@ const SignInPage = () => {
             <FieldError className="text-xs text-red-500 mt-1" />
           </TextField>
 
-          {/* Submit Button */}
+        
           <div className="mt-2">
             <Button 
               className='w-full bg-blue-950 hover:bg-blue-900 text-white font-bold py-6 rounded-2xl shadow-lg shadow-blue-950/20 transition-all duration-200 active:scale-[0.98]'
@@ -125,7 +125,7 @@ const SignInPage = () => {
             </Button>
           </div>
 
-          {/* নতুন অ্যাকাউন্ট খোলার নোটিশ */}
+          
           <div className='text-center mt-2'>
             <p className='text-xs text-slate-500'>
               Do not have an account?{' '}
