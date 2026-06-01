@@ -4,14 +4,12 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 
-
 const FacilityCard = ({ facility }) => {
- 
-  const { _id, name, image, facility_type, location, price_per_hour, description } = facility;
+  // 🎯 পরিবর্তন: নতুন ফর্ম ডাটা অনুযায়ী 'image' এর বদলে 'imageUrl' এবং 'facility_type' এর বদলে 'type' ডিস্ট্রাকচার করা হয়েছে।
+  const { _id, name, image, type, location, price_per_hour, description } = facility;
   const router = useRouter();
 
   const handleBookNow = async () => {
-   
     const { data: session } = await authClient.getSession(); 
     
     if (session) {
@@ -19,17 +17,17 @@ const FacilityCard = ({ facility }) => {
     } else {
       router.push('/signin');
     }
- 
   };
 
   return (
-   
     <div className="bg-[#0D1B2A]/40 backdrop-blur-md rounded-2xl border border-white/5 hover:border-teal-500/30 shadow-xl hover:shadow-teal-500/5 transition-all duration-300 overflow-hidden flex flex-col h-full group">
       
+      {/* 🖼️ ইমেজ সেকশন */}
       <div className="relative h-52 w-full overflow-hidden bg-slate-950">
         <Image 
+          // ✅ এখানে এখন ডাইনামিক 'imageUrl' ভেরিয়েবলটি বসানো হয়েছে
           src={image || "/placeholder.jpg"} 
-          alt={name} 
+          alt={name || "Facility"} 
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
@@ -38,11 +36,13 @@ const FacilityCard = ({ facility }) => {
      
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1528] via-transparent to-transparent opacity-60" />
         
+        {/* ✅ টাইপ ক্যাটাগরি ব্যাজ আপডেট */}
         <span className="absolute top-3 right-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-slate-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-md z-10">
-          {facility_type}
+          {type || "Sport"}
         </span>
       </div>
 
+      {/* 📝 কন্টেন্ট সেকশন */}
       <div className="p-5 flex flex-col grow">
         
         <h3 className="text-lg font-bold text-white mb-2 line-clamp-1 group-hover:text-teal-400 transition-colors duration-200">
@@ -60,6 +60,7 @@ const FacilityCard = ({ facility }) => {
           {description}
         </p>
 
+        {/* 💰 প্রাইস এবং বুকিং অ্যাকশন বাটন */}
         <div className="pt-4 border-t border-white/5 flex items-center justify-between mt-auto">
           <div>
             <span className="text-xl font-extrabold bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
@@ -79,8 +80,8 @@ const FacilityCard = ({ facility }) => {
         </div>
 
       </div>
-    </div>);
-
+    </div>
+  );
 };
 
 export default FacilityCard;
