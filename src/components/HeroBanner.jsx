@@ -2,18 +2,36 @@
 import Link from "next/link";
 import Image from "next/image";
 
+// Swiper কম্পোনেন্ট এবং মডিউল ইম্পোর্ট
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectFade, Pagination } from "swiper/modules";
+
+// Swiper এর CSS ইম্পোর্ট
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/pagination";
+
 const HeroBanner = () => {
+  // স্লাইডারের জন্য ইমেজের ডেটা অ্যারে
+  const slides = [
+    { src: "/sportImage1.jpg", alt: "Handball Turf" },
+    { src: "/sportImage2.jpg", alt: "Volleyball Court" },
+    { src: "/sportImage3.jpg", alt: "Indoor Cricket" },
+    { src: "/sportImage4.jpg", alt: "Badminton Court" },
+    { src: "/sportImage5.jpg", alt: "Tennis" },
+    { src: "/sportImage6.jpg", alt: "Football Court" },
+  ];
+
   return (
     <div className="relative min-h-[90vh] lg:h-[85vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-950 via-[#0B1528] to-slate-900">
       
-     
+      {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-teal-500/10 blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-500/10 blur-[130px] rounded-full pointer-events-none" />
 
-   
       <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-12 lg:py-0">
         
-    
+        {/* বাম পাশ: কন্টেন্ট সেকশন (এটি ফিক্সড থাকবে) */}
         <div className="lg:col-span-5 space-y-6 text-left">
           <span className="px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-teal-500/10 text-teal-400 border border-teal-500/20 inline-block animate-pulse">
             Your Ultimate Sports Hub
@@ -50,51 +68,43 @@ const HeroBanner = () => {
           </div>
         </div>
 
-     
-        <div className="lg:col-span-7 grid grid-cols-12 gap-4 h-[450px] sm:h-[500px] w-full items-center">
-          
-         
-          <div className="col-span-7 h-full relative rounded-2xl overflow-hidden group border border-white/5 shadow-2xl">
-            <Image 
-              src="/sportImage1.jpg" 
-              alt="Football Turf"
-              fill
-              priority
-              sizes="(max-width: 768px) 60vw, (max-width: 1200px) 40vw, 33vw"
-              className="object-cover transform group-hover:scale-105 transition duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
-          </div>
-
-         
-          <div className="col-span-5 flex flex-col gap-4 h-full justify-between">
-            
-           
-            <div className="h-[48%] relative rounded-2xl overflow-hidden group border border-white/5 shadow-xl">
-              <Image 
-                src="/sportImage2.jpg" 
-                alt="Badminton Court"
-                fill
-                sizes="(max-width: 768px) 40vw, (max-width: 1200px) 25vw, 20vw"
-                className="object-cover transform group-hover:scale-105 transition duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
-            </div>
-
-          
-            <div className="h-[48%] relative rounded-2xl overflow-hidden group border border-white/5 shadow-xl">
-              <Image 
-                src="/sportImage3.jpg" 
-                alt="Indoor Cricket"
-                fill
-                sizes="(max-width: 768px) 40vw, (max-width: 1200px) 25vw, 20vw"
-                className="object-cover transform group-hover:scale-105 transition duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
-            </div>
-
-          </div>
-
+        {/* ডান পাশ: Swiper.js স্লাইডার সেকশন */}
+        <div className="lg:col-span-7 w-full h-[350px] sm:h-[450px] lg:h-[500px] relative rounded-2xl overflow-hidden border border-white/5 shadow-2xl">
+          <Swiper
+            spaceBetween={0}
+            effect={"fade"} // স্মুথ ফেড ইন-আউট ইফেক্ট এর জন্য
+            centeredSlides={true}
+            autoplay={{
+              delay: 1500,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            modules={[Autoplay, EffectFade, Pagination]}
+            className="h-full w-full"
+          >
+            {slides.map((slide, index) => (
+              <SwiperSlide key={index} className="relative w-full h-full">
+                <Image 
+                  src={slide.src} 
+                  alt={slide.alt}
+                  fill
+                  priority={index === 0} // প্রথম ইমেজ দ্রুত লোড হওয়ার জন্য
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+                {/* ইমেজের ওপর হালকা ডার্ক শেড */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent" />
+                
+                {/* ইমেজের ওপর স্পোর্টস ট্যাগ বা নাম দেখানোর জন্য (ঐচ্ছিক) */}
+                <span className="absolute bottom-6 left-6 bg-slate-950/60 backdrop-blur-md text-teal-400 text-xs font-semibold px-4 py-2 rounded-xl border border-white/10">
+                  {slide.alt}
+                </span>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
       </div>

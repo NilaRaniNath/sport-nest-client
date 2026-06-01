@@ -22,9 +22,10 @@ const SignInPage = () => {
       const { data, error } = await authClient.signIn.email({
         email: user.email?.trim(),
         password: user.password,
-        callbackURL: "/" // লগইন সফল হলে সরাসরি হোম পেজে নিয়ে যাবে
+        callbackURL: "/" 
       });
 
+      
       if (data) {
         toast.success("👋 Welcome back! Login Successful.", {
           position: "top-right",
@@ -127,7 +128,7 @@ const SignInPage = () => {
           {/* নতুন অ্যাকাউন্ট খোলার নোটিশ */}
           <div className='text-center mt-2'>
             <p className='text-xs text-slate-500'>
-              Don't have an account?{' '}
+              Do not have an account?{' '}
               <a href="/signup" className='text-blue-600 font-bold hover:underline transition-all'>
                 Sign Up
               </a>

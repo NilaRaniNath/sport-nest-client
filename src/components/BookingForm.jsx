@@ -1,25 +1,41 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client"; 
 
 export default function BookingForm({ facility }) {
   const router = useRouter();
   const [bookingDate, setBookingDate] = useState("");
   const [timeSlot, setTimeSlot] = useState("");
-  
-
   const [hours, setHours] = useState("");
-  
- 
-  const totalPrice = facility?.price_per_hour || 0;
+  const [userEmail, setUserEmail] = useState(""); 
   
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
 
+ 
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await authClient.getSession();
+      if (session?.data?.user?.email) {
+        setUserEmail(session.data.user.email);
+      }
+    };
+    fetchSession();
+  }, []);
+
+ 
+  const pricePerHour = facility?.price_per_hour || 0;
+  const totalPrice = pricePerHour * (Number(hours) || 1);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    
+    if (!userEmail) {
+      setMessage({ type: "error", text: "Please log in to make a booking." });
+      return;
+    }
+
     if (!hours || Number(hours) < 1 || Number(hours) > 5) {
       setMessage({ type: "error", text: "Please enter hours between 1 and 5." });
       return;
@@ -28,9 +44,12 @@ export default function BookingForm({ facility }) {
     setLoading(true);
     setMessage({ type: "", text: "" });
 
+  
     const bookingData = {
-      facilityId: facility?._id || facility?.id || "", 
+      userEmail: userEmail,
       facilityName: facility?.name || "",
+      facilityImage: facility?.image || "", 
+      location: facility?.location || "", 
       bookingDate,
       timeSlot,
       hours: Number(hours),
@@ -96,7 +115,6 @@ export default function BookingForm({ facility }) {
           />
         </div>
 
-       
         <div>
           <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Booking Date</label>
           <input
@@ -105,11 +123,10 @@ export default function BookingForm({ facility }) {
             value={bookingDate}
             min={new Date().toISOString().split("T")[0]}
             onChange={(e) => setBookingDate(e.target.value)}
-            className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-teal-500/50 transition-colors dynamic-theme-input"
+            className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-teal-500/50 transition-colors"
           />
         </div>
 
-     
         <div>
           <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Time Slot</label>
           <select
@@ -129,7 +146,6 @@ export default function BookingForm({ facility }) {
           </select>
         </div>
 
-        {/* Hours Field (Max 5 Hours) */}
         <div>
           <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Hours (Max 5)</label>
           <input
@@ -141,7 +157,6 @@ export default function BookingForm({ facility }) {
             value={hours}
             onChange={(e) => {
               const val = e.target.value;
-             
               if (Number(val) > 5) {
                 setHours(5);
               } else {
@@ -152,7 +167,6 @@ export default function BookingForm({ facility }) {
           />
         </div>
 
-   
         <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex justify-between items-center mt-6">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Price</span>
           <span className="text-2xl font-black bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
@@ -160,7 +174,6 @@ export default function BookingForm({ facility }) {
           </span>
         </div>
 
-        
         <button
           type="submit"
           disabled={loading}

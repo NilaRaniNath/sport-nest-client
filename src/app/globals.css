@@ -1,2 +1,21 @@
 @import "tailwindcss";
 @import "@heroui/styles"; 
+
+/* Swiper একটিভ ডটের কালার Teal করা */
+.swiper-pagination-bullet-active {
+  background: #14b8a6 !important; /* tailwind teal-500 */
+  width: 24px !important; /* একটিভ ডটটি একটু লম্বা দেখাবে (প্রিমিয়াম লুক) */
+  border-radius: 4px !important;
+  transition: all 0.3s ease;
+}
+
+/* ইন-একটিভ ডটগুলোর স্টাইল */
+.swiper-pagination-bullet {
+  background: #94a3b8; /* slate-400 */
+  opacity: 0.6;
+}
+
+/* ডটগুলোকে স্লাইডারের নিচ থেকে সামান্য ওপরে তোলা */
+.swiper-pagination {
+  bottom: 16px !important;
+}

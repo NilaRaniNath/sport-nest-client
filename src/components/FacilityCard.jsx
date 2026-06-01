@@ -2,22 +2,24 @@
 import Image from 'next/image';
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { authClient } from '@/lib/auth-client';
 
 
-const FacilityCard = ({ facility, isUserSignedIn }) => {
+const FacilityCard = ({ facility }) => {
  
   const { _id, name, image, facility_type, location, price_per_hour, description } = facility;
   const router = useRouter();
 
- 
-  const handleBookNow = () => {
-    if (isUserSignedIn) {
-      
+  const handleBookNow = async () => {
+   
+    const { data: session } = await authClient.getSession(); 
+    
+    if (session) {
       router.push(`/facilities/${_id}`);
     } else {
-    
       router.push('/signin');
     }
+ 
   };
 
   return (
@@ -77,8 +79,8 @@ const FacilityCard = ({ facility, isUserSignedIn }) => {
         </div>
 
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default FacilityCard;

@@ -104,7 +104,7 @@ const Navbar = () => {
                   </svg>
                 </button>
 
-                {/* প্রোফাইল ক্লিক ওপেন হওয়া ড্রপডাউন মেনু */}
+                
                 {isDropdownOpen && (
                   <div className="origin-top-right absolute right-0 mt-3 w-60 rounded-2xl shadow-2xl bg-slate-900 border border-white/10 divide-y divide-white/5 focus:outline-none z-50">
                     

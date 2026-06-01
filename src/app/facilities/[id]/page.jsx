@@ -3,15 +3,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { getSingleFacility } from "@/lib/facilities/data";
 import BookingForm from "@/components/BookingForm";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 
 
 
 export default async function FacilityDetailsPage({ params }) {
-  
+  const {token}=await auth.api.getToken({
+    headers:await headers(),
+  })
+
+
   const solveId=await params;
   const facilityId =solveId.id;
-  const facility = await getSingleFacility(facilityId);
+  const facility = await getSingleFacility(facilityId, token);
 
   if (!facility) {
     return (
@@ -90,7 +96,7 @@ export default async function FacilityDetailsPage({ params }) {
           </div>
 
           <div className="lg:col-span-5 sticky top-24">
-            <BookingForm facility={facility} />
+            <BookingForm key={facility._id} facility={facility} />
           </div>
 
         </div>

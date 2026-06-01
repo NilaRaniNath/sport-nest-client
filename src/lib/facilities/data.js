@@ -20,9 +20,7 @@ export const getFacilities = async () => {
 
 export const getFeaturedFacilities = async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/featured`, {
-      cache: "no-store",
-    });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/featured`);
 
     if (!res.ok) {
       throw new Error("Failed to fetch data");
@@ -40,9 +38,13 @@ export const getFeaturedFacilities = async () => {
 
 
 
-export const getSingleFacility = async (id) => {
+export const getSingleFacility = async (id,token) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities/${id}`,{
+      headers:{
+        authorization:`Bearer ${token}` || ""
+      }
+    }, {
       cache: "no-store",
     });
     if (!res.ok) return null;
@@ -52,3 +54,5 @@ export const getSingleFacility = async (id) => {
     return null;
   }
 };
+
+

@@ -1,20 +1,16 @@
 import FacilityCard from "@/components/FacilityCard";
 import { getFacilities } from "@/lib/facilities/data";
 import React from "react";
-import { headers } from "next/headers";
-import { auth } from "@/lib/auth";
+
 
 export default async function FacilitiesPage() {
   
   const facilities = await getFacilities();
 
  
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
 
+  // console.log("SERVER SESSION CHECK:", session); 
   
-  const isUserSignedIn = !!session; 
     
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0B1528] via-slate-950 to-slate-950 text-white py-16 relative overflow-hidden">
@@ -50,7 +46,7 @@ export default async function FacilitiesPage() {
               <FacilityCard 
                 key={facility._id} 
                 facility={facility} 
-                isUserSignedIn={isUserSignedIn} 
+                
               />
             ))}
           </div>

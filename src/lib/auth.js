@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 
 import { mongodbAdapter } from "@better-auth/mongo-adapter"; 
 import { MongoClient } from "mongodb";
+import { jwt } from "better-auth/plugins";
 
 let client;
 if (!global._mongoClient) {
@@ -23,5 +24,15 @@ export const auth = betterAuth({
     ],
     advanced: {
         disableDefaultEntries: true
-    }
+    },
+    session:{
+        cookieCache:{
+            enabled:true,
+            strategy:"jwt",
+            maxAge:7 * 24 * 60 * 60,
+        }
+    },
+    plugins: [
+        jwt(), 
+    ]
 });
