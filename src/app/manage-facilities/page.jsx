@@ -9,7 +9,6 @@ export default function ManageFacilities() {
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState("");
   
-  // 📝 এডিট মোডাল স্টেট
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFacilityId, setSelectedFacilityId] = useState(null);
   const [editForm, setEditForm] = useState({
@@ -23,18 +22,16 @@ export default function ManageFacilities() {
     available_slots: []
   });
 
-  // 🗑️ ডিলিট কনফার্মেশন মোডাল স্টেট
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
     facilityId: null,
     facilityName: ""
   });
 
-  // 🔔 কাস্টম নোটিফিকেশন অ্যালার্ট স্টেট
   const [alertConfig, setAlertConfig] = useState({
     show: false,
     message: "",
-    type: "success" // 'success' | 'error'
+    type: "success" 
   });
 
   const timeSlotsList = [
@@ -47,7 +44,6 @@ export default function ManageFacilities() {
     "Tennis Court", "Swimming Pool", "Gymnasium"
   ];
 
-  // অটোমেটিক অ্যালার্ট মেসেজ হাইড করার টাইমার
   const showAlert = (message, type = "success") => {
     setAlertConfig({ show: true, message, type });
     setTimeout(() => {
@@ -69,19 +65,17 @@ export default function ManageFacilities() {
         } catch (err) {
           console.error("Error fetching facilities:", err);
         } finally {
-          setLoading(false);
+          loading && setLoading(false);
         }
       }
     };
     fetchUserAndFacilities();
   }, []);
 
-  // 🗑️ ডিলিট মোডাল ওপেন করার ট্রিগার
   const triggerDeleteConfirm = (id, name) => {
     setDeleteModal({ isOpen: true, facilityId: id, facilityName: name });
   };
 
-  // 🗑️ কাস্টম মোডাল থেকে ডিলিট এক্সিকিউট করা
   const handleConfirmedDelete = async () => {
     const id = deleteModal.facilityId;
     const { data: tokenData } = await authClient.token();
@@ -153,12 +147,19 @@ export default function ManageFacilities() {
 
     if (res.ok) {
       setFacilities(facilities.map((f) => 
-        f._id === selectedFacilityId ? { ...f, ...editForm, price_per_hour: Number(editForm.price_per_hour), capacity: Number(editForm.capacity) } : f
+        f._id === selectedFacilityId ? { 
+          ...f, 
+          ...editForm, 
+          // এখানে type ও আপডেট করে দেওয়া হলো যাতে ব্যাক-এন্ডের সাথে কনফ্লিক্ট না করে
+          type: editForm.facility_type, 
+          price_per_hour: Number(editForm.price_per_hour), 
+          capacity: Number(editForm.capacity) 
+        } : f
       ));
       setIsModalOpen(false);
-      showAlert("Facility updated successfully!", "success"); // 🎯 উইন্ডো অ্যালার্ট রিমুভড
+      showAlert("Facility updated successfully!", "success"); 
     } else {
-      showAlert("Failed to update facility", "error"); // 🎯 উইন্ডো অ্যালার্ট রিমুভড
+      showAlert("Failed to update facility", "error"); 
     }
   };
 
@@ -179,7 +180,6 @@ export default function ManageFacilities() {
   return (
     <div className="min-h-screen bg-[#0F172A] text-white py-6 md:py-12 px-4 sm:px-6 relative">
       
-      {/* 🔔 ১. কাস্টম নোটিফিকেশন টোস্ট অ্যালার্ট */}
       {alertConfig.show && (
         <div className={`fixed top-6 right-6 z-[100] flex items-center gap-3 px-5 py-3.5 rounded-2xl border backdrop-blur-xl shadow-2xl transition-all animate-in slide-in-from-top-4 duration-300 ${
           alertConfig.type === "success" 
@@ -197,9 +197,10 @@ export default function ManageFacilities() {
           Manage Your Facilities
         </h1>
 
-        {/* মোবাইল কার্ড ভিউ */}
+        {/* মোবাইল ভিউ */}
         <div className="grid grid-cols-1 gap-4 md:hidden">
           {facilities.map((facility) => {
+            // এখানে ফিক্স করা হয়েছে: facility.type ও চেক করবে
             const currentType = facility.facility_type || facility.type || "Sport";
             return (
               <div key={facility._id} className="bg-[#0D1B2A]/40 backdrop-blur-md border border-white/5 rounded-2xl p-4 shadow-lg space-y-4">
@@ -290,7 +291,7 @@ export default function ManageFacilities() {
         {facilities.length === 0 && <p className="text-center text-slate-500 py-12 text-sm">No sports facilities registered under your email.</p>}
       </div>
 
-      {/* 📝 ২. কাস্টম আপডেট/এডিট মোডাল */}
+      {/* মোডাল সেকশন */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
           <div className="relative w-full max-w-2xl bg-[#0F172A] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl my-auto max-h-[95vh] flex flex-col">
@@ -372,7 +373,7 @@ export default function ManageFacilities() {
         </div>
       )}
 
-    
+      {/* ডিলিট মোডাল */}
       {deleteModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
           <div className="w-full max-w-md bg-[#1E293B] border border-white/10 rounded-2xl p-6 shadow-2xl text-center space-y-4">

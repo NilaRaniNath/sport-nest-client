@@ -5,6 +5,7 @@ import { Check } from '@gravity-ui/icons';
 import { Button, Card, FieldError, Form, Input, Label, TextField } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { GrGoogle } from 'react-icons/gr';
 import { toast } from 'react-toastify';
 
 const SignInPage = () => {
@@ -47,6 +48,18 @@ const SignInPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: 'google',
+        callbackURL: '/'
+      });
+      toast.info("Signing in with Google...");
+    } catch (err) {
+      toast.error("Google Sign-In failed!");
+    };
   };
 
   return (
@@ -134,6 +147,27 @@ const SignInPage = () => {
               </a>
             </p>
           </div>
+
+
+                   <div className="flex flex-col items-center gap-4 mt-8 w-full">
+          <div className="flex items-center w-full gap-2 text-gray-400">
+            <hr className="flex-1 border-gray-200" />
+            <span className="text-xs font-medium">OR</span>
+            <hr className="flex-1 border-gray-200" />
+          </div>
+
+          <Button
+            onPress={handleGoogleSignIn}
+            variant="ghost"
+            className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50 transition-all font-medium py-5"
+          >
+            <GrGoogle className="text-xl text-red-500" />
+            Sign In with Google
+          </Button>
+        </div>
+
+
+
 
         </Form>
       </Card>

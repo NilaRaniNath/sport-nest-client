@@ -5,6 +5,7 @@ import { Button, Card, Description, FieldError, Form, Input, Label, TextField } 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'; 
 import React, { useState } from 'react';
+import { GrGoogle } from 'react-icons/gr';
 import { toast } from 'react-toastify';
 
 const SignUpPage = () => {
@@ -46,6 +47,19 @@ const SignUpPage = () => {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+      
+      toast.info("Redirecting to Google...");
+    } catch (err) {
+      toast.error("Google SignUp failed!");
     }
   };
 
@@ -169,6 +183,24 @@ const SignUpPage = () => {
               </Link>
             </p>
           </div>
+
+              <div className="flex flex-col items-center gap-4 mt-8 w-full">
+          <div className="flex items-center w-full gap-2 text-gray-400">
+            <hr className="flex-1 border-gray-200" />
+            <span className="text-xs font-medium">OR</span>
+            <hr className="flex-1 border-gray-200" />
+          </div>
+
+          <Button
+            onPress={handleGoogleSignUp}
+            variant="ghost"
+            className="animate__animated animate__fadeInUp animate__delay-1s w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50 transition-all font-medium py-5"
+          >
+            <GrGoogle className="text-xl text-red-500" />
+            Register with Google
+          </Button>
+        </div>
+
 
         </Form>
       </Card>

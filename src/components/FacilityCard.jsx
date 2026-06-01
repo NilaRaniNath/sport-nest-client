@@ -6,7 +6,7 @@ import { authClient } from '@/lib/auth-client';
 
 const FacilityCard = ({ facility }) => {
  
-  const { _id, name, image, type, location, price_per_hour, description } = facility;
+  const { _id, name, image, facility_type, location, price_per_hour, description } = facility;
   const router = useRouter();
 
   const handleBookNow = async () => {
@@ -38,7 +38,7 @@ const FacilityCard = ({ facility }) => {
         
         
         <span className="absolute top-3 right-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-slate-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-md z-10">
-          {type || "Sport"}
+          {facility_type || "Sport"}
         </span>
       </div>
 
