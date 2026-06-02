@@ -51,22 +51,23 @@ export default function ManageFacilities() {
     }, 3000);
   };
 
+  // 1. Fixed Dynamic Hook trigger sequence
   useEffect(() => {
     const fetchUserAndFacilities = async () => {
-      const session = await authClient.getSession();
-      if (session?.data?.user?.email) {
-        setUserEmail(session.data.user.email);
-        try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/owner-facilities/${session.data.user.email}`);
+      try {
+        const session = await authClient.getSession();
+        if (session?.data?.user?.email) {
+          setUserEmail(session.data.user.email);
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/owner-facilities/${encodeURIComponent(session.data.user.email)}`);
           if (res.ok) {
             const data = await res.json();
             setFacilities(data);
           }
-        } catch (err) {
-          console.error("Error fetching facilities:", err);
-        } finally {
-          loading && setLoading(false);
         }
+      } catch (err) {
+        console.error("Error fetching facilities:", err);
+      } finally {
+        setLoading(false); // Clean explicit setup
       }
     };
     fetchUserAndFacilities();
@@ -78,13 +79,15 @@ export default function ManageFacilities() {
 
   const handleConfirmedDelete = async () => {
     const id = deleteModal.facilityId;
-    const { data: tokenData } = await authClient.token();
-
     try {
+      const tokenData = await authClient.token();
+      const token = tokenData?.data?.token || tokenData?.token; // Auth client standard pattern normalization
+
+      // 2. Authorization parameter fix
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities/${id}`, { 
         method: "DELETE",
         headers: {
-          authorization: `Bearer ${tokenData?.token}`
+          "Authorization": `Bearer ${token}`
         }
       });
       if (res.ok) {
@@ -130,36 +133,40 @@ export default function ManageFacilities() {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    const { data: tokenData } = await authClient.token();
+    try {
+      const tokenData = await authClient.token();
+      const token = tokenData?.data?.token || tokenData?.token;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities/${selectedFacilityId}`, {
-      method: "PATCH",
-      headers: { 
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${tokenData?.token}`,
-      },
-      body: JSON.stringify({
+      // 3. Normalized structure fix logic representation
+      const payload = {
         ...editForm,
         price_per_hour: Number(editForm.price_per_hour),
         capacity: Number(editForm.capacity)
-      }),
-    });
+      };
 
-    if (res.ok) {
-      setFacilities(facilities.map((f) => 
-        f._id === selectedFacilityId ? { 
-          ...f, 
-          ...editForm, 
-          // এখানে type ও আপডেট করে দেওয়া হলো যাতে ব্যাক-এন্ডের সাথে কনফ্লিক্ট না করে
-          type: editForm.facility_type, 
-          price_per_hour: Number(editForm.price_per_hour), 
-          capacity: Number(editForm.capacity) 
-        } : f
-      ));
-      setIsModalOpen(false);
-      showAlert("Facility updated successfully!", "success"); 
-    } else {
-      showAlert("Failed to update facility", "error"); 
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities/${selectedFacilityId}`, {
+        method: "PATCH",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        setFacilities(facilities.map((f) => 
+          f._id === selectedFacilityId ? { 
+            ...f, 
+            ...payload 
+          } : f
+        ));
+        setIsModalOpen(false);
+        showAlert("Facility updated successfully!", "success"); 
+      } else {
+        showAlert("Failed to update facility", "error"); 
+      }
+    } catch (err) {
+      showAlert("Error processing update form submission", "error");
     }
   };
 
@@ -197,10 +204,9 @@ export default function ManageFacilities() {
           Manage Your Facilities
         </h1>
 
-        {/* মোবাইল ভিউ */}
+        {/* মোবাইল কার্ড ভিউ */}
         <div className="grid grid-cols-1 gap-4 md:hidden">
           {facilities.map((facility) => {
-            // এখানে ফিক্স করা হয়েছে: facility.type ও চেক করবে
             const currentType = facility.facility_type || facility.type || "Sport";
             return (
               <div key={facility._id} className="bg-[#0D1B2A]/40 backdrop-blur-md border border-white/5 rounded-2xl p-4 shadow-lg space-y-4">

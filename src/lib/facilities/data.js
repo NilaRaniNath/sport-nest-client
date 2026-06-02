@@ -1,3 +1,6 @@
+import { headers } from "next/headers";
+import { auth } from "../auth";
+
 export const getFacilities = async (search = "", sportType = "") => {
   try {
     const res = await fetch(
@@ -42,17 +45,24 @@ export const getFeaturedFacilities = async () => {
 
 export const getSingleFacility = async (id,token) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities/${id}`,{
-      headers:{
-        authorization:`Bearer ${token}` || ""
-      }
-    }, {
+    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities/${id}`, {
+      method: "GET", 
+      headers: {
+        "Authorization": `Bearer ${token || ""}`, 
+        "Content-Type": "application/json"
+      },
       cache: "no-store",
     });
-    if (!res.ok) return null;
+
+    if (!res.ok) {
+      console.error(`Fetch failed with status: ${res.status}`);
+      return null;
+    }
+    
     return await res.json();
   } catch (error) {
-    console.error("Error fetching facility:", error);
+    console.error("Error fetching facility details:", error);
     return null;
   }
 };

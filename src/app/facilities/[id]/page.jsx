@@ -1,28 +1,74 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getSingleFacility } from "@/lib/facilities/data";
 import BookingForm from "@/components/BookingForm";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
+// Inline optimization: Token tracking matrix logic handle korar jonno ekahnei fetch logic nilam
+async function getFacilityDetails(id, token) {
+  try {
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/facilities/${id}`;
+    
+    const res = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token || ""}`,
+        "Content-Type": "application/json"
+      },
+      cache: "no-store", // SSR data re-fetching guarantee configuration
+    });
 
+    if (!res.ok) {
+      console.error(`[Fetch System] Server responded with code matrix status: ${res.status}`);
+      return null;
+    }
 
+    return await res.json();
+  } catch (error) {
+    console.error("[Fetch System] Critical connection crash logging error:", error.message);
+    return null;
+  }
+}
 
 export default async function FacilityDetailsPage({ params }) {
-  const {token}=await auth.api.getToken({
-    headers:await headers(),
-  })
+  // params runtime extraction layer check
+  const solveId = await params;
+  const facilityId = solveId.id;
+  
+  let token = null;
+  let facility = null;
 
+  try {
+    // Better Auth API reference extraction validation engine context
+    const sessionContext = await auth.api.getToken({
+      headers: await headers(),
+    });
+    
+    token = sessionContext?.token || null;
+    console.log("-----------------------------------------");
+    console.log("Extracted Token Key String Vector:", token ? `${token.substring(0, 15)}...` : "TOKEN_NULL_EMPTY");
+    console.log("-----------------------------------------");
+  } catch (authError) {
+    console.error("Better Auth matrix key handshake execution crashed:", authError.message);
+  }
 
-  const solveId=await params;
-  const facilityId =solveId.id;
-  const facility = await getSingleFacility(facilityId, token);
-console.log("Sending Token to Server:", token); 
+  // Final validation target routing call
+  if (facilityId) {
+    facility = await getFacilityDetails(facilityId, token);
+  }
+
+  // Data missing state layout error boundary handler
   if (!facility) {
     return (
-      <div className="min-h-screen bg-[#0B1528] flex items-center justify-center text-white">
-        <p className="text-xl font-semibold text-slate-400">Facility not found!</p>
+      <div className="min-h-screen bg-[#0B1528] flex flex-col items-center justify-center text-white space-y-4">
+        <p className="text-xl font-semibold text-slate-400">Facility metadata load failed!</p>
+        <p className="text-xs text-slate-500 bg-red-950/40 px-4 py-2 border border-red-500/20 rounded-md">
+          Status: 403 Forbidden or Invalid Facility MongoDB Object ID
+        </p>
+        <Link href="/facilities" className="text-xs font-bold text-teal-400 hover:underline">
+          &larr; Back to Listings
+        </Link>
       </div>
     );
   }
@@ -30,13 +76,13 @@ console.log("Sending Token to Server:", token);
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0B1528] via-slate-950 to-slate-950 text-white py-12 sm:py-20 relative overflow-hidden">
       
-    
+      {/* Background Decorative Blurs */}
       <div className="absolute top-10 left-1/4 w-[500px] h-[500px] bg-teal-500/5 blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-emerald-500/5 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-      
+        {/* Navigation Link */}
         <Link 
           href="/facilities" 
           className="inline-flex items-center space-x-2 text-xs font-bold text-slate-400 hover:text-teal-400 mb-8 transition-colors group"
@@ -47,10 +93,10 @@ console.log("Sending Token to Server:", token);
           <span>Back to Facilities</span>
         </Link>
 
-       
+        {/* Content Layout Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          
+          {/* Main Content Pane */}
           <div className="lg:col-span-7 bg-[#0D1B2A]/30 backdrop-blur-md border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
             <div className="relative h-64 sm:h-96 w-full">
               <Image 
@@ -95,6 +141,7 @@ console.log("Sending Token to Server:", token);
             </div>
           </div>
 
+          {/* Form Processing Sidebar Panel */}
           <div className="lg:col-span-5 sticky top-24">
             <BookingForm key={facility._id} facility={facility} />
           </div>
