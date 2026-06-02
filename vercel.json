@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://sport-nest-server-git-main-nilunath335-4602s-projects.vercel.app/api/:path*"
-    }
-  ]
-}
