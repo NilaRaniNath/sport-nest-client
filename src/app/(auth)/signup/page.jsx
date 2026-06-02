@@ -36,7 +36,7 @@ const SignUpPage = () => {
       }
       
       if (error) {
-        
+        console.log(error)
         if (error.status === 422) {
           toast.error("This email is already registered!");
         } else {

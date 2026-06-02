@@ -1,5 +1,3 @@
-import { headers } from "next/headers";
-import { auth } from "../auth";
 
 export const getFacilities = async (search = "", sportType = "") => {
   try {
