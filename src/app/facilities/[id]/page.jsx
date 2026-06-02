@@ -18,7 +18,7 @@ export default async function FacilityDetailsPage({ params }) {
   const solveId=await params;
   const facilityId =solveId.id;
   const facility = await getSingleFacility(facilityId, token);
-
+console.log("Sending Token to Server:", token); 
   if (!facility) {
     return (
       <div className="min-h-screen bg-[#0B1528] flex items-center justify-center text-white">
