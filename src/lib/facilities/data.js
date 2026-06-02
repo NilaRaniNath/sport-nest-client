@@ -6,12 +6,13 @@ export const getFacilities = async (search = "", sportType = "") => {
         cache: "no-store",
       }
     );
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
+    console.log(res)
+    // if (!res.ok) {
+    //   throw new Error("Failed to fetch data");
+    // }
 
     const data = await res.json(); 
+    console.log(data)
     return data || [];
 
   } catch (error) {
