@@ -1,24 +1,24 @@
-/** @type {import('next').NextConfig} */
+//  @type {import('next').Next}
 const nextConfig = {
-  /* config options here */
-  reactCompiler: true,
-  
-  // ✅ Better-Auth এর মেইন এবং ক্যাশ তৈরি করা সব সাব-মডিউল এখানে একসাথে এক্সক্লুড করা হলো
-  serverExternalPackages: [
-    "better-auth", 
-    "@better-auth/mongo-adapter", 
-    "@better-auth/kysely-adapter"
-  ],
-
+  output: 'standalone',
+  experimental: {
+    serverComponentsExternalPackages: ['@better-auth/kysely-adapter', 'kysely'],
+  },
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**",
-        port: "",
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+        pathname: '**',
+        search: '',
       },
-    ]
-  }  
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+      }
+    ],
+  },
 };
 
 export default nextConfig;
