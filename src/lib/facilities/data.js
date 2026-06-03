@@ -52,11 +52,13 @@ export const getSingleFacility = async (id,token) => {
       },
       cache: "no-store",
     });
-
+// console.log(res)
     if (!res.ok) {
       console.error(`Fetch failed with status: ${res.status}`);
       return null;
     }
+
+    
     
     return await res.json();
   } catch (error) {

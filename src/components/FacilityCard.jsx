@@ -11,7 +11,7 @@ const FacilityCard = ({ facility }) => {
 
   const handleBookNow = async () => {
     const { data: session } = await authClient.getSession(); 
-    
+    // console.log(data)
     if (session) {
       router.push(`/facilities/${_id}`);
     } else {

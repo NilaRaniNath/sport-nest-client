@@ -32,7 +32,7 @@ const Navbar = () => {
     email: session?.user?.email || "",
     avatar: session?.user?.image || "/avatar.jpg" 
   };
-
+// console.log(user)
   const handleLogout = async () => {
     try {
       await authClient.signOut({
