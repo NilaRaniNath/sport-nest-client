@@ -24,7 +24,7 @@ export default function BookingCard({ booking }) {
     }
   }, [booking]);
 
-  // daisyUI মোডাল ওপেন এবং ক্লোজ করার ফাংশন
+  
   const openModal = () => {
     const modal = document.getElementById(`cancel_modal_${bookingId}`);
     if (modal) modal.showModal();
@@ -37,7 +37,7 @@ export default function BookingCard({ booking }) {
 
   const handleConfirmedDelete = async () => {
     setLoading(true);
-    closeModal(); // মোডাল ক্লোজ করা হচ্ছে
+    closeModal(); 
 
     try {
       const { data: tokenData } = await authClient.token();
@@ -173,7 +173,7 @@ export default function BookingCard({ booking }) {
             )}
             <button
               type="button"
-              onClick={openModal} // daisyUI মোডাল ট্রিকার ফাংশন
+              onClick={openModal} 
               disabled={loading}
               className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-red-500 hover:text-red-600 transition-colors disabled:opacity-40"
             >
@@ -184,7 +184,7 @@ export default function BookingCard({ booking }) {
 
         </div>
       ) : (
-        /* 📝 ইনলাইন আপডেট ফর্ম মোড */
+       
         <form onSubmit={handleUpdate} className="space-y-4">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2">
             <h4 className="text-xs font-bold text-teal-600 uppercase tracking-wider flex items-center gap-1">
@@ -262,7 +262,7 @@ export default function BookingCard({ booking }) {
         </form>
       )}
 
-      {/* ⚠️ daisyUI কাস্টম লাইট-থিম ক্যানসেল মোডাল */}
+      
       <dialog id={`cancel_modal_${bookingId}`} className="modal modal-bottom sm:modal-middle backdrop-blur-sm bg-slate-950/40">
         <div className="modal-box bg-white border border-slate-200 rounded-2xl shadow-xl max-w-md p-6 text-center">
           

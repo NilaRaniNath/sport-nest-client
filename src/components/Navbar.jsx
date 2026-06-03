@@ -47,7 +47,7 @@ const Navbar = () => {
     }
   };
 
-  // 🚀 মোবাইল মেনুর কোনো লিঙ্কে ক্লিক করলে মেনু স্বয়ংক্রিয়ভাবে বন্ধ করার ফাংশন
+ 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };

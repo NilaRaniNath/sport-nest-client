@@ -1,22 +1,21 @@
 "use client";
 import React from "react";
-// 🎯 Framer Motion ইম্পোর্ট করা হয়েছে
 import { motion } from "framer-motion";
 
 export default function MissionVision() {
   
-  // 🎯 কন্টেইনার ভেরিয়েন্ট (কার্ডগুলো একের পর এক স্ট্যাগার্ড ওয়েতে আসার জন্য)
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2, // প্রতিটি কার্ডের মাঝে ০.২ সেকেন্ড গ্যাপ থাকবে
+        staggerChildren: 0.2, 
       },
     },
   };
 
-  // 🎯 হেডার এবং কার্ডের ইন্ডিভিজুয়াল অ্যানিমেশন ইফেক্ট
+
   const itemVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -29,12 +28,12 @@ export default function MissionVision() {
   return (
     <section className="py-20 bg-gradient-to-b from-slate-950 via-[#0B1528] to-slate-950 relative overflow-hidden">
       
-      {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট */}
+     
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-teal-500/5 blur-[180px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* 🎯 সেকশন হেডার অ্যানিমেশন (স্ক্রোলে একবারই অ্যানিমেট হবে) */}
+        
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -53,7 +52,7 @@ export default function MissionVision() {
           </p>
         </motion.div>
 
-        {/* 🎯 কার্ড গ্রিড কন্টেইনার (Motion Div ব্যবহার করা হয়েছে) */}
+        
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -62,7 +61,7 @@ export default function MissionVision() {
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
           
-          {/* 🎯 ১. Our Mission */}
+         
           <motion.div 
             variants={itemVariants}
             className="bg-white/[0.02] backdrop-blur-md rounded-3xl p-8 border border-white/[0.05] hover:border-teal-500/30 shadow-2xl hover:shadow-teal-500/5 transition-all duration-300 flex flex-col group hover:-translate-y-1"
@@ -78,7 +77,7 @@ export default function MissionVision() {
             </p>
           </motion.div>
 
-          {/* 👁️ ২. Our Vision */}
+         
           <motion.div 
             variants={itemVariants}
             className="bg-white/[0.02] backdrop-blur-md rounded-3xl p-8 border border-white/[0.05] hover:border-sky-500/30 shadow-2xl hover:shadow-sky-500/5 transition-all duration-300 flex flex-col group hover:-translate-y-1"
@@ -95,7 +94,7 @@ export default function MissionVision() {
             </p>
           </motion.div>
 
-          {/* 💎 ৩. Our Core Values (এখানে bg-linear-to-r ফিক্স করে bg-gradient-to-r করা হয়েছে) */}
+          
           <motion.div 
             variants={itemVariants}
             className="bg-white/[0.02] backdrop-blur-md rounded-3xl p-8 border border-white/[0.05] hover:border-amber-500/30 shadow-2xl hover:shadow-amber-500/5 transition-all duration-300 flex flex-col group hover:-translate-y-1"

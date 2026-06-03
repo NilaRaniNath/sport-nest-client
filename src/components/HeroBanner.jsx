@@ -1,23 +1,23 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-// 🎯 motion এবং এর সাথে Link কম্পোনেন্ট অ্যানিমেট করার জন্য ইম্পোর্ট
+
 import { motion } from "framer-motion";
 
-// Swiper কম্পোনেন্ট এবং মডিউল ইম্পোর্ট
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 
-// Swiper এর CSS ইম্পোর্ট
+
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 
-// 🎯 Next.js এর Link কে ফ্রেমার মোশন কম্পোনেন্টে কনভার্ট করা হয়েছে
+
 const MotionLink = motion.create ? motion.create(Link) : motion(Link);
 
 const HeroBanner = () => {
-  // স্লাইডারের জন্য ইমেজের ডেটা অ্যারে
+
   const slides = [
     { src: "/sportImage1.jpg", alt: "Handball Turf" },
     { src: "/sportImage2.jpg", alt: "Volleyball Court" },
@@ -27,7 +27,7 @@ const HeroBanner = () => {
     { src: "/sportImage6.jpg", alt: "Football Court" },
   ];
 
-  // ফ্রেমার মোশনের প্যারেন্ট কন্টেইনার ভেরিয়েন্ট
+ 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -38,7 +38,7 @@ const HeroBanner = () => {
     },
   };
 
-  // প্রতিটি টেক্সট ও বাটনের জন্য অ্যানিমেশন ভেরিয়েন্ট
+  
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -51,27 +51,27 @@ const HeroBanner = () => {
   return (
     <div className="relative min-h-[90vh] lg:h-[85vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-950 via-[#0B1528] to-slate-900">
       
-      {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট */}
+      
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-teal-500/10 blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-500/10 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-12 lg:py-0">
         
-        {/* বাম পাশ: কন্টেন্ট সেকশন */}
+    
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="lg:col-span-5 space-y-6 text-left"
         >
-          {/* ১. ব্যাজ অ্যানিমেশন */}
+         
           <motion.div variants={itemVariants}>
             <span className="px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-teal-500/10 text-teal-400 border border-teal-500/20 inline-block animate-pulse">
               Your Ultimate Sports Hub
             </span>
           </motion.div>
           
-          {/* ২. মেইন হেডিং অ্যানিমেশন */}
+          
           <motion.h1 
             variants={itemVariants}
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white"
@@ -82,7 +82,7 @@ const HeroBanner = () => {
             </span>
           </motion.h1>
           
-          {/* ৩. প্যারাগ্রাফ অ্যানিমেশন */}
+         
           <motion.p 
             variants={itemVariants}
             className="text-slate-300 text-base sm:text-lg font-light tracking-wide leading-relaxed max-w-lg"
@@ -90,7 +90,7 @@ const HeroBanner = () => {
             Discover and reserve premium turf, courts, and stadiums around you. Elevate your game with SportNest seamless booking system.
           </motion.p>
 
-          {/* ৪. বাটন অ্যানিমেশন (কোনো legacyBehavior বা <a> ট্যাগ ছাড়াই ক্লিন কোড) */}
+          
           <motion.div variants={itemVariants} className="pt-2">
             <MotionLink 
               href="/facilities" 
@@ -113,7 +113,7 @@ const HeroBanner = () => {
           </motion.div>
         </motion.div>
 
-        {/* ডান পাশ: Swiper.js স্লাইডার সেকশন */}
+        
         <motion.div 
           initial={{ opacity: 0, scale: 0.95, x: 20 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}

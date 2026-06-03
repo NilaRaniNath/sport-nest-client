@@ -67,7 +67,7 @@ export default function ManageFacilities() {
       } catch (err) {
         console.error("Error fetching facilities:", err);
       } finally {
-        setLoading(false); // Clean explicit setup
+        setLoading(false); 
       }
     };
     fetchUserAndFacilities();
@@ -81,9 +81,9 @@ export default function ManageFacilities() {
     const id = deleteModal.facilityId;
     try {
       const tokenData = await authClient.token();
-      const token = tokenData?.data?.token || tokenData?.token; // Auth client standard pattern normalization
+      const token = tokenData?.data?.token || tokenData?.token; 
 
-      // 2. Authorization parameter fix
+      
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/facilities/${id}`, { 
         method: "DELETE",
         headers: {
@@ -137,7 +137,7 @@ export default function ManageFacilities() {
       const tokenData = await authClient.token();
       const token = tokenData?.data?.token || tokenData?.token;
 
-      // 3. Normalized structure fix logic representation
+     
       const payload = {
         ...editForm,
         price_per_hour: Number(editForm.price_per_hour),
@@ -204,7 +204,7 @@ export default function ManageFacilities() {
           Manage Your Facilities
         </h1>
 
-        {/* মোবাইল কার্ড ভিউ */}
+      
         <div className="grid grid-cols-1 gap-4 md:hidden">
           {facilities.map((facility) => {
             const currentType = facility.facility_type || facility.type || "Sport";
@@ -246,7 +246,7 @@ export default function ManageFacilities() {
           })}
         </div>
 
-        {/* ডেস্কটপ টেবিল ভিউ */}
+       
         <div className="hidden md:block bg-[#0D1B2A]/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
@@ -297,7 +297,7 @@ export default function ManageFacilities() {
         {facilities.length === 0 && <p className="text-center text-slate-500 py-12 text-sm">No sports facilities registered under your email.</p>}
       </div>
 
-      {/* মোডাল সেকশন */}
+     
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
           <div className="relative w-full max-w-2xl bg-[#0F172A] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl my-auto max-h-[95vh] flex flex-col">
@@ -379,7 +379,7 @@ export default function ManageFacilities() {
         </div>
       )}
 
-      {/* ডিলিট মোডাল */}
+      
       {deleteModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
           <div className="w-full max-w-md bg-[#1E293B] border border-white/10 rounded-2xl p-6 shadow-2xl text-center space-y-4">

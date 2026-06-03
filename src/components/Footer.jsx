@@ -7,10 +7,10 @@ const Footer = () => {
     <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 pt-16 pb-8 backdrop-blur-md bg-opacity-95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Main Grid Layout */}
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           
-          {/* Section 1: Brand & About */}
+          
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="bg-linear-to-tr from-teal-400 to-teal-600 p-2 rounded-xl text-white shadow-lg shadow-teal-500/20">
@@ -27,7 +27,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Section 2: Contact Information */}
+          
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-slate-200 tracking-wider uppercase border-b border-slate-800 pb-2 max-w-37.5">
               Contact Us
@@ -48,7 +48,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Section 3: Social Links */}
+         
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-slate-200 tracking-wider uppercase border-b border-slate-800 pb-2 max-w-37.5">
               Follow Us
@@ -57,7 +57,7 @@ const Footer = () => {
               Stay connected with our social media networks for exclusive updates and exciting offers.
             </p>
             
-            {/* Social Icons Container */}
+          
             <div className="flex space-x-3 pt-2">
               <a href="https://facebook.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800/50 border border-slate-700/50 flex items-center justify-center text-slate-300 hover:bg-teal-500 hover:text-slate-950 hover:border-transparent hover:-translate-y-1 transition-all duration-300 shadow-md">
                 <FaFacebookF size={16} />
@@ -76,7 +76,7 @@ const Footer = () => {
 
         </div>
 
-        {/* Bottom Section: Copyright */}
+        
         <div className="pt-8 mt-8 border-t border-slate-800/60 text-center flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-light text-slate-500">
           <p>© {new Date().getFullYear()} <span className="text-slate-400 font-medium">SportNest</span>. All Rights Reserved.</p>
           <div className="flex space-x-6">

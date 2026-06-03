@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export default function TipsSection() {
-  // স্ট্যাটিক টিপস ডাটা
+ 
   const tips = [
     {
       id: 1,
@@ -44,18 +44,18 @@ export default function TipsSection() {
     },
   ];
 
-  // 🎯 কার্ডগুলো একের পর এক স্ট্যাগার্ড ওয়েতে লোড হওয়ার ভেরিয়েন্ট
+ 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.12, // প্রতিটি কার্ডের মাঝে ০.১২ সেকেন্ড গ্যাপ থাকবে
+        staggerChildren: 0.12, 
       },
     },
   };
 
-  // 🎯 প্রতিটি আর্টিকেল কার্ডের ইন্ডিভিজুয়াল অ্যানিমেশন ইফেক্ট
+  
   const cardVariants = {
     hidden: { opacity: 0, y: 30, scale: 0.98 },
     visible: {
@@ -69,13 +69,13 @@ export default function TipsSection() {
   return (
     <section className="py-20 bg-gradient-to-b from-[#0B1528] via-slate-950 to-slate-950 relative overflow-hidden">
       
-      {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট */}
+     
       <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-80 h-80 bg-teal-500/5 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* 📢 সেকশন হেডার ও বাটন (স্ক্রোলে একবার স্মুথলি রিভিল হবে) */}
+        
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export default function TipsSection() {
             </p>
           </div>
           
-          {/* View All Button (Micro-interactions সহ) */}
+          
           <motion.button 
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
@@ -108,7 +108,7 @@ export default function TipsSection() {
           </motion.button>
         </motion.div>
 
-        {/* 🎴 টিপস কার্ড গ্রিড (Motion Div ব্যবহার করা হয়েছে) */}
+        
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -122,7 +122,7 @@ export default function TipsSection() {
               variants={cardVariants}
               className="bg-white/[0.02] backdrop-blur-md rounded-3xl p-6 border border-white/[0.05] hover:border-white/[0.12] shadow-2xl hover:shadow-teal-500/5 transition-all duration-300 flex flex-col group relative hover:-translate-y-1"
             >
-              {/* ক্যাটাগরি ব্যাজ ও আইকন */}
+              
               <div className="flex items-center justify-between mb-5">
                 <div className={`h-10 w-10 rounded-2xl border flex items-center justify-center ${tip.iconColor}`}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -134,21 +134,21 @@ export default function TipsSection() {
                 </span>
               </div>
 
-              {/* কন্টেন্ট এরিয়া */}
+              
               <div className="flex flex-col grow">
-                {/* টাইটেল */}
+                
                 <h3 className="text-base font-bold text-slate-100 leading-snug group-hover:text-teal-400 transition-colors mb-2 line-clamp-2">
                   {tip.title}
                 </h3>
 
-                {/* ডেসক্রিপশন */}
+               
                 <p className="text-slate-400 text-xs sm:text-sm font-light leading-relaxed line-clamp-3 mb-6">
                   {tip.description}
                 </p>
 
-                {/* ডিউরেশন, লেখক ও Read More লিঙ্ক */}
+                
                 <div className="mt-auto pt-4 border-t border-white/[0.05] space-y-4">
-                  {/* ডিউরেশন ও লেখক */}
+                  
                   <div className="flex items-center gap-4 text-xs font-medium text-slate-500">
                     <span className="flex items-center gap-1">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -160,7 +160,7 @@ export default function TipsSection() {
                     <span className="text-slate-400">By {tip.author}</span>
                   </div>
 
-                  {/* Read More লিঙ্ক (bg-linear-to-r কে bg-gradient-to-r দিয়ে ফিক্স করা হয়েছে) */}
+                  
                   <div className="flex items-center justify-between cursor-pointer">
                     <span className="text-xs sm:text-sm font-semibold text-slate-300 group-hover:text-white transition-colors">
                       Read Full Guide
