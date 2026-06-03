@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+// 🎯 Framer Motion ইম্পোর্ট করা হয়েছে
+import { motion } from "framer-motion";
 
 export default function TipsSection() {
   // স্ট্যাটিক টিপস ডাটা
@@ -31,7 +33,7 @@ export default function TipsSection() {
       author: "Kapil Dev",
       iconColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
     },
-     {
+    {
       id: 4,
       category: "Nutrition",
       title: "Pre-Game Meal Ideas: Fueling for Success",
@@ -42,17 +44,45 @@ export default function TipsSection() {
     },
   ];
 
+  // 🎯 কার্ডগুলো একের পর এক স্ট্যাগার্ড ওয়েতে লোড হওয়ার ভেরিয়েন্ট
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12, // প্রতিটি কার্ডের মাঝে ০.১২ সেকেন্ড গ্যাপ থাকবে
+      },
+    },
+  };
+
+  // 🎯 প্রতিটি আর্টিকেল কার্ডের ইন্ডিভিজুয়াল অ্যানিমেশন ইফেক্ট
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.98 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
   return (
     <section className="py-20 bg-gradient-to-b from-[#0B1528] via-slate-950 to-slate-950 relative overflow-hidden">
       
-      {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট (ডিজাইনকে ডায়নামিক করার জন্য) */}
+      {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট */}
       <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-80 h-80 bg-teal-500/5 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* 📢 সেকশন হেডার */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14">
+        {/* 📢 সেকশন হেডার ও বাটন (স্ক্রোলে একবার স্মুথলি রিভিল হবে) */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-14"
+        >
           <div>
             <span className="bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent font-extrabold text-xs uppercase tracking-widest block mb-2">
               Get Better Every Day
@@ -65,20 +95,31 @@ export default function TipsSection() {
             </p>
           </div>
           
-          {/* View All Button */}
-          <button className="mt-6 md:mt-0 inline-flex items-center gap-2 text-teal-400 font-semibold hover:text-teal-300 transition-colors text-sm group border border-teal-500/20 bg-teal-500/5 px-5 py-2.5 rounded-xl hover:bg-teal-500/10">
+          {/* View All Button (Micro-interactions সহ) */}
+          <motion.button 
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className="mt-6 md:mt-0 inline-flex items-center gap-2 text-teal-400 font-semibold hover:text-teal-300 transition-colors text-sm group border border-teal-500/20 bg-teal-500/5 px-5 py-2.5 rounded-xl hover:bg-teal-500/10 cursor-pointer"
+          >
             See All Articles
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
-        {/* 🎴 টিপস কার্ড গ্রিড (৪ কলাম) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 🎴 টিপস কার্ড গ্রিড (Motion Div ব্যবহার করা হয়েছে) */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           {tips.map((tip) => (
-            <article 
+            <motion.article 
               key={tip.id} 
+              variants={cardVariants}
               className="bg-white/[0.02] backdrop-blur-md rounded-3xl p-6 border border-white/[0.05] hover:border-white/[0.12] shadow-2xl hover:shadow-teal-500/5 transition-all duration-300 flex flex-col group relative hover:-translate-y-1"
             >
               {/* ক্যাটাগরি ব্যাজ ও আইকন */}
@@ -119,12 +160,12 @@ export default function TipsSection() {
                     <span className="text-slate-400">By {tip.author}</span>
                   </div>
 
-                  {/* Read More লিঙ্ক */}
-                  <div className="flex items-center justify-between">
+                  {/* Read More লিঙ্ক (bg-linear-to-r কে bg-gradient-to-r দিয়ে ফিক্স করা হয়েছে) */}
+                  <div className="flex items-center justify-between cursor-pointer">
                     <span className="text-xs sm:text-sm font-semibold text-slate-300 group-hover:text-white transition-colors">
                       Read Full Guide
                     </span>
-                    <div className="h-8 w-8 rounded-xl bg-white/5 group-hover:bg-linear-to-r group-hover:from-teal-400 group-hover:to-emerald-400 flex items-center justify-center text-slate-400 group-hover:text-slate-950 transition-all duration-300">
+                    <div className="h-8 w-8 rounded-xl bg-white/5 group-hover:bg-gradient-to-r group-hover:from-teal-400 group-hover:to-emerald-400 flex items-center justify-center text-slate-400 group-hover:text-slate-950 transition-all duration-300">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
@@ -132,9 +173,9 @@ export default function TipsSection() {
                   </div>
                 </div>
               </div>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
 
       </div>
     </section>

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { MapPin, Calendar, Clock, DollarSign, Trash2, Edit2, X } from "lucide-react";
+import { MapPin, Calendar, Clock, DollarSign, Trash2, Edit2, X, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 
@@ -10,15 +10,12 @@ export default function BookingCard({ booking }) {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  
   const bookingId = booking._id; 
 
-  
   const [editDate, setEditDate] = useState(booking.bookingDate || "");
   const [editSlot, setEditSlot] = useState(booking.timeSlot || "10:00 AM - 12:00 PM");
   const [editHours, setEditHours] = useState(booking.hours || 1);
 
-  
   useEffect(() => {
     if (booking) {
       setEditDate(booking.bookingDate || "");
@@ -27,21 +24,28 @@ export default function BookingCard({ booking }) {
     }
   }, [booking]);
 
-  
-  const handleDelete = async () => {
-    if (!confirm("Are you sure you want to cancel this booking?")) return;
+  // daisyUI মোডাল ওপেন এবং ক্লোজ করার ফাংশন
+  const openModal = () => {
+    const modal = document.getElementById(`cancel_modal_${bookingId}`);
+    if (modal) modal.showModal();
+  };
+
+  const closeModal = () => {
+    const modal = document.getElementById(`cancel_modal_${bookingId}`);
+    if (modal) modal.close();
+  };
+
+  const handleConfirmedDelete = async () => {
     setLoading(true);
+    closeModal(); // মোডাল ক্লোজ করা হচ্ছে
 
     try {
-
       const { data: tokenData } = await authClient.token();
       const token = tokenData?.token || tokenData;
-      // console.log(token)
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking/${bookingId}`, {
         method: "DELETE",
         headers: {
-          
           "Authorization": token ? `Bearer ${token}` : "",
         }
       });
@@ -60,27 +64,25 @@ export default function BookingCard({ booking }) {
     }
   };
 
-  
   const handleUpdate = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-   
     const originalHours = booking.hours || 1;
     const originalTotalPrice = booking.totalPrice || 0;
     const pricePerHour = originalTotalPrice / originalHours;
     const updatedTotalPrice = pricePerHour * Number(editHours);
 
     try {
-
       const { data: tokenData } = await authClient.token();
       const token = tokenData?.token || tokenData;
       
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking/${bookingId}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json",
+        headers: { 
+          "Content-Type": "application/json",
           "Authorization": token ? `Bearer ${token}` : "",
-         },
+        },
         body: JSON.stringify({
           bookingDate: editDate,
           timeSlot: editSlot,
@@ -107,11 +109,9 @@ export default function BookingCard({ booking }) {
   return (
     <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200">
       {!isEditing ? (
-        
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           
           <div className="flex items-center gap-4 w-full sm:w-auto">
-           
             <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 relative">
               <Image 
                 src={booking.facilityImage || "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=200&auto=format&fit=crop"} 
@@ -123,12 +123,10 @@ export default function BookingCard({ booking }) {
               />
             </div>
 
-            
             <div className="space-y-1.5">
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-base sm:text-lg font-bold text-slate-800 tracking-tight">{booking.facilityName}</h3>
                 
-       
                 {booking.status === "confirmed" ? (
                   <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-100">
                     Confirmed
@@ -140,7 +138,6 @@ export default function BookingCard({ booking }) {
                 )}
               </div>
 
-              
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-slate-500">
                 <div className="flex items-center gap-1">
                   <MapPin size={14} className="text-slate-400" />
@@ -162,10 +159,10 @@ export default function BookingCard({ booking }) {
             </div>
           </div>
 
-          
           <div className="flex items-center gap-3 w-full sm:w-auto justify-end border-t border-slate-50 sm:border-t-0 pt-3 sm:pt-0">
             {booking.status !== "confirmed" && (
               <button
+                type="button"
                 onClick={() => setIsEditing(true)}
                 disabled={loading}
                 className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-teal-600 transition-colors disabled:opacity-50"
@@ -175,7 +172,8 @@ export default function BookingCard({ booking }) {
               </button>
             )}
             <button
-              onClick={handleDelete}
+              type="button"
+              onClick={openModal} // daisyUI মোডাল ট্রিকার ফাংশন
               disabled={loading}
               className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-red-500 hover:text-red-600 transition-colors disabled:opacity-40"
             >
@@ -263,6 +261,40 @@ export default function BookingCard({ booking }) {
           </div>
         </form>
       )}
+
+      {/* ⚠️ daisyUI কাস্টম লাইট-থিম ক্যানসেল মোডাল */}
+      <dialog id={`cancel_modal_${bookingId}`} className="modal modal-bottom sm:modal-middle backdrop-blur-sm bg-slate-950/40">
+        <div className="modal-box bg-white border border-slate-200 rounded-2xl shadow-xl max-w-md p-6 text-center">
+          
+          <div className="w-12 h-12 rounded-full bg-red-50 border border-red-100 text-red-500 flex items-center justify-center mx-auto mb-3">
+            <AlertTriangle size={22} />
+          </div>
+          
+          <h3 className="font-bold text-xl text-slate-800 mb-2">Cancel Booking</h3>
+          
+          <p className="text-xs text-slate-500 leading-relaxed mb-6">
+            Are you sure you want to cancel your booking for <span className="text-slate-800 font-bold">{booking.facilityName}</span>? This action cannot be undone.
+          </p>
+
+          <div className="modal-action flex gap-3 justify-center w-full m-0">
+            <button 
+              type="button" 
+              className="btn btn-ghost flex-1 min-h-0 h-11 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-600 hover:bg-slate-100 capitalize"
+              onClick={closeModal}
+            >
+              No, Keep it
+            </button>
+            <button 
+              type="button" 
+              className="btn flex-1 min-h-0 h-11 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 border-none text-white text-xs font-bold shadow-md hover:opacity-95 capitalize"
+              onClick={handleConfirmedDelete}
+            >
+              Yes, Cancel Booking
+            </button>
+          </div>
+        </div>
+      </dialog>
+
     </div>
   );
 }
