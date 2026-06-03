@@ -12,10 +12,10 @@ The primary objective of **SportNest** is to digitize and simplify the sports ve
 
 ---
 
-## 🌐 Live URL:https://sport-nest-flax.vercel.app
+## 🌐 Live URL
 
 Experience the live application here:  
-🔗 **[Live Website Link]:
+🔗 **[Live Website Link]:https://sport-nest-flax.vercel.app
 
 ---
 
